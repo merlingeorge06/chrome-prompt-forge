@@ -44,22 +44,115 @@ const PromptGenerator = () => {
   };
 
   const enhancePrompt = (basePrompt: string, tone: string, complexity: number, creativity: number): string => {
-    // In a real app, this would call an API
-    // This is just a simulation
+    // Enhanced algorithm with more sophisticated prompt engineering
     const toneModifiers = {
-      professional: "using professional language and industry terminology",
-      friendly: "using a warm, approachable, and conversational tone",
-      technical: "with technical precision and detailed specifications",
-      creative: "with imaginative and original phrasing",
-      persuasive: "using compelling arguments and persuasive language",
-      formal: "with formal language, proper structure, and academic precision",
+      professional: {
+        style: "using professional language and industry terminology",
+        phrases: [
+          "Deliver a comprehensive analysis", 
+          "Provide a well-structured outline", 
+          "Present an expert perspective on"
+        ]
+      },
+      friendly: {
+        style: "using a warm, approachable, and conversational tone",
+        phrases: [
+          "Let's chat about", 
+          "I'd love to help you understand", 
+          "Here's a friendly take on"
+        ]
+      },
+      technical: {
+        style: "with technical precision and detailed specifications",
+        phrases: [
+          "Technical specifications include", 
+          "The system architecture consists of", 
+          "Implementation details require"
+        ]
+      },
+      creative: {
+        style: "with imaginative and original phrasing",
+        phrases: [
+          "Envision a world where", 
+          "Picture this scenario:", 
+          "Imagine the possibilities of"
+        ]
+      },
+      persuasive: {
+        style: "using compelling arguments and persuasive language",
+        phrases: [
+          "You can't afford to miss", 
+          "Consider the significant advantages of", 
+          "The undeniable benefits include"
+        ]
+      },
+      formal: {
+        style: "with formal language, proper structure, and academic precision",
+        phrases: [
+          "In accordance with established protocols", 
+          "It is hereby noted that", 
+          "As evidenced by scholarly research"
+        ]
+      },
     };
     
     const selectedModifier = toneModifiers[tone as keyof typeof toneModifiers];
-    const complexityStr = complexity < 33 ? "simple" : complexity < 66 ? "moderately complex" : "sophisticated";
-    const creativityStr = creativity < 33 ? "straightforward" : creativity < 66 ? "somewhat creative" : "highly creative";
     
-    return `${basePrompt} ${selectedModifier}, with ${complexityStr} structure and ${creativityStr} elements.`;
+    // Complexity level affects sentence structure and vocabulary
+    const complexityLevels = {
+      low: {
+        structure: "using simple, direct sentences",
+        context: "with just the essential information",
+        vocabLevel: "accessible"
+      },
+      medium: {
+        structure: "using a mix of simple and compound sentences",
+        context: "with moderate background information and context",
+        vocabLevel: "intermediate"
+      },
+      high: {
+        structure: "using varied sentence structures including complex and compound-complex sentences",
+        context: "with comprehensive contextual information and nuanced details",
+        vocabLevel: "advanced"
+      }
+    };
+    
+    const complexityLevel = complexity < 33 ? complexityLevels.low : 
+                           complexity < 66 ? complexityLevels.medium : 
+                           complexityLevels.high;
+    
+    // Creativity affects how innovative and unconventional the prompt is
+    const creativityLevels = {
+      conservative: {
+        approach: "using conventional methods and established frameworks",
+        perspective: "from a traditional viewpoint"
+      },
+      balanced: {
+        approach: "balancing innovative ideas with proven techniques",
+        perspective: "considering both conventional and novel perspectives"
+      },
+      innovative: {
+        approach: "exploring unconventional approaches and novel techniques",
+        perspective: "from unique and unexpected angles"
+      }
+    };
+    
+    const creativityLevel = creativity < 33 ? creativityLevels.conservative : 
+                           creativity < 66 ? creativityLevels.balanced : 
+                           creativityLevels.innovative;
+    
+    // Select a random phrase from the tone's phrases
+    const randomPhraseIndex = Math.floor(Math.random() * selectedModifier.phrases.length);
+    const tonalPhrase = selectedModifier.phrases[randomPhraseIndex];
+    
+    // Construct the enhanced prompt with all parameters
+    let enhancedPrompt = `${tonalPhrase} ${basePrompt}, ${selectedModifier.style}, ${complexityLevel.structure} ${creativityLevel.approach}. Provide ${complexityLevel.context} ${creativityLevel.perspective}, using ${complexityLevel.vocabLevel} vocabulary.`;
+    
+    // Clean up any awkward phrasing or double spaces
+    enhancedPrompt = enhancedPrompt.replace(/\s+/g, ' ').trim();
+    enhancedPrompt = enhancedPrompt.charAt(0).toUpperCase() + enhancedPrompt.slice(1);
+    
+    return enhancedPrompt;
   };
 
   const handleCopy = () => {
@@ -135,7 +228,7 @@ const PromptGenerator = () => {
           <div className="space-y-6">
             <div>
               <h3 className="text-sm text-chrome-light mb-2 font-orbitron">Enhanced Prompt</h3>
-              <div className="bg-secondary border border-border rounded-md p-4 min-h-32">
+              <div className="bg-secondary border border-border rounded-md p-4 min-h-32 overflow-auto max-h-60">
                 {generatedPrompt ? generatedPrompt : "Your enhanced prompt will appear here..."}
               </div>
             </div>

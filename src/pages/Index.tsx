@@ -16,7 +16,6 @@ const Index = () => {
           <nav className="hidden md:flex gap-6">
             <a href="#features" className="text-chrome-light hover:text-primary transition-colors">Features</a>
             <a href="#how-it-works" className="text-chrome-light hover:text-primary transition-colors">How It Works</a>
-            <a href="#pricing" className="text-chrome-light hover:text-primary transition-colors">Pricing</a>
           </nav>
           <Button className="bg-primary hover:bg-primary/90 red-glow">Get Started</Button>
         </div>
@@ -121,10 +120,10 @@ const Index = () => {
         <div className="glass-panel rounded-lg p-8 max-w-3xl w-full tech-border">
           <h2 className="text-3xl font-bold mb-4 chrome-text">Ready to Optimize Your AI Results?</h2>
           <p className="text-chrome-light mb-8">
-            Start generating powerful, tailored prompts that deliver exactly what you need.
+            Start generating powerful, tailored prompts for free. No limits, no subscription required.
           </p>
           <Button className="bg-primary hover:bg-primary/90 red-glow text-lg py-6 px-8">
-            Get Started for Free
+            Get Started Now
           </Button>
         </div>
       </section>
