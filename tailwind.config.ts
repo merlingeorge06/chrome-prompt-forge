@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -52,6 +53,11 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				chrome: {
+					DEFAULT: 'hsl(var(--chrome))',
+					dark: 'hsl(var(--chrome-dark))',
+					light: 'hsl(var(--chrome-light))'
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -84,11 +90,28 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'pulse-glow': {
+					'0%, 100%': { 
+						boxShadow: '0 0 15px rgba(255, 15, 63, 0.6)' 
+					},
+					'50%': { 
+						boxShadow: '0 0 25px rgba(255, 15, 63, 0.8)' 
+					},
+				},
+				'chrome-shimmer': {
+					'0%': { backgroundPosition: '-200% 0' },
+					'100%': { backgroundPosition: '200% 0' },
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'pulse-glow': 'pulse-glow 2s infinite',
+				'chrome-shimmer': 'chrome-shimmer 3s infinite linear'
+			},
+			backgroundImage: {
+				'chrome-gradient': 'linear-gradient(135deg, hsl(0, 0%, 90%) 0%, hsl(0, 0%, 70%) 50%, hsl(0, 0%, 85%) 100%)'
 			}
 		}
 	},
