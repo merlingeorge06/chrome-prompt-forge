@@ -76,6 +76,17 @@ const PromptGenerator = () => {
       explain: "provide a clear explanation of",
       brainstorm: "generate creative ideas for",
       marketing: "create compelling marketing copy about",
+      // 10 new goal options
+      design_landing: "design an effective landing page for",
+      analyze_data: "analyze the data related to",
+      video_script: "create an engaging video script about",
+      email_campaign: "develop an email campaign focused on",
+      product_feature: "design a product feature that addresses",
+      technical_doc: "write technical documentation for",
+      social_media: "create engaging social media content about",
+      business_strategy: "develop a business strategy for",
+      educational: "create educational content explaining",
+      research_summary: "summarize research findings about",
     };
     
     // Audience-specific language
@@ -129,6 +140,12 @@ const PromptGenerator = () => {
       structuredPrompt += "Include comments explaining the logic and any potential edge cases.";
     } else if (goal === 'marketing' && (audience === 'marketers' || audience === 'creators')) {
       structuredPrompt += "Focus on unique value propositions and compelling calls to action.";
+    } else if (goal === 'design_landing' && audience === 'marketers') {
+      structuredPrompt += "Focus on conversion optimization and clear call-to-action elements.";
+    } else if (goal === 'video_script' && audience === 'creators') {
+      structuredPrompt += "Include engaging hooks and visual scene descriptions.";
+    } else if (goal === 'technical_doc' && audience === 'developers') {
+      structuredPrompt += "Include code examples and clear implementation steps.";
     }
     
     // Clean up formatting

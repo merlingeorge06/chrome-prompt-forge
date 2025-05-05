@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
 
 interface StructuredInputsProps {
   subject: string;
@@ -38,6 +39,17 @@ const StructuredInputs: React.FC<StructuredInputsProps> = ({
     { label: "Explain Concept", value: "explain" },
     { label: "Brainstorm Ideas", value: "brainstorm" },
     { label: "Create Marketing Copy", value: "marketing" },
+    // 10 new goal options
+    { label: "Design Landing Page", value: "design_landing" },
+    { label: "Analyze Data", value: "analyze_data" },
+    { label: "Create Video Script", value: "video_script" },
+    { label: "Generate Email Campaign", value: "email_campaign" },
+    { label: "Design Product Feature", value: "product_feature" },
+    { label: "Write Technical Documentation", value: "technical_doc" },
+    { label: "Create Social Media Post", value: "social_media" },
+    { label: "Develop Business Strategy", value: "business_strategy" },
+    { label: "Create Educational Content", value: "educational" },
+    { label: "Write Research Summary", value: "research_summary" },
   ];
 
   const audienceOptions = [
@@ -54,12 +66,12 @@ const StructuredInputs: React.FC<StructuredInputsProps> = ({
     <div className="space-y-6">
       <div>
         <Label htmlFor="subject" className="text-sm text-chrome-light font-orbitron mb-2 block">Subject</Label>
-        <Input 
+        <Textarea 
           id="subject"
           placeholder="What is the prompt about?"
           value={subject}
           onChange={(e) => onSubjectChange(e.target.value)}
-          className="bg-secondary border-border focus:border-primary"
+          className="bg-secondary border-border focus:border-primary min-h-[120px] w-full"
         />
       </div>
 
@@ -69,7 +81,7 @@ const StructuredInputs: React.FC<StructuredInputsProps> = ({
           <SelectTrigger id="goal" className="bg-secondary border-border focus:border-primary w-full">
             <SelectValue placeholder="What are you trying to achieve?" />
           </SelectTrigger>
-          <SelectContent className="bg-secondary border-border">
+          <SelectContent className="bg-secondary border-border max-h-[300px]">
             {goalOptions.map(option => (
               <SelectItem key={option.value} value={option.value}>{option.label}</SelectItem>
             ))}
@@ -102,7 +114,7 @@ const StructuredInputs: React.FC<StructuredInputsProps> = ({
             id="wordCount"
             value={[constraints.wordCount]} 
             onValueChange={(value) => onConstraintsChange('wordCount', value[0])} 
-            min={50}
+            min={30}
             max={500} 
             step={10} 
           />
