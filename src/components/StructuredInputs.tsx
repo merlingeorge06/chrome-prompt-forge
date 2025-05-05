@@ -60,6 +60,9 @@ const StructuredInputs: React.FC<StructuredInputsProps> = ({
     { label: "Students", value: "students" },
     { label: "Marketers", value: "marketers" },
     { label: "Content Creators", value: "creators" },
+    { label: "Executive Decision Makers", value: "executives" },
+    { label: "Researchers", value: "researchers" },
+    { label: "Technical Non-Developers", value: "technical" },
   ];
 
   return (
