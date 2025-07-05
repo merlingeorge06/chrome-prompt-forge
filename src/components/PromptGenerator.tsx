@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -66,162 +67,153 @@ const PromptGenerator = () => {
   };
 
   const enhanceUserInput = (userInput: string, goal: string, tone: string, audience: string, constraints: any): string => {
-    let words = userInput.trim().split(/\s+/);
+    // Extract the core concept from user input
+    const coreIdea = userInput.trim();
     
-    // Apply tone-based word refinements
-    words = words.map(word => {
-      const lowerWord = word.toLowerCase();
-      
-      // Tone-based word enhancements
-      if (tone === 'professional') {
-        const professionalReplacements: { [key: string]: string } = {
-          'good': 'excellent',
-          'bad': 'suboptimal',
-          'big': 'substantial',
-          'small': 'concise',
-          'nice': 'exceptional',
-          'cool': 'innovative',
-          'awesome': 'outstanding',
-          'great': 'superior',
-          'ok': 'acceptable',
-          'okay': 'adequate'
-        };
-        return professionalReplacements[lowerWord] || word;
-      }
-      
-      if (tone === 'creative') {
-        const creativeReplacements: { [key: string]: string } = {
-          'good': 'magnificent',
-          'nice': 'delightful',
-          'big': 'enormous',
-          'small': 'tiny',
-          'make': 'craft',
-          'create': 'bring to life',
-          'show': 'reveal',
-          'tell': 'narrate'
-        };
-        return creativeReplacements[lowerWord] || word;
-      }
-      
-      if (tone === 'technical') {
-        const technicalReplacements: { [key: string]: string } = {
-          'make': 'implement',
-          'create': 'develop',
-          'fix': 'optimize',
-          'change': 'modify',
-          'improve': 'enhance',
-          'check': 'validate',
-          'test': 'verify'
-        };
-        return technicalReplacements[lowerWord] || word;
-      }
-      
-      if (tone === 'persuasive') {
-        const persuasiveReplacements: { [key: string]: string } = {
-          'good': 'outstanding',
-          'help': 'empower',
-          'show': 'demonstrate',
-          'make': 'deliver',
-          'get': 'achieve',
-          'nice': 'remarkable'
-        };
-        return persuasiveReplacements[lowerWord] || word;
-      }
-      
-      return word;
-    });
+    // Build enhanced sentence based on goal
+    let enhancedSentence = '';
     
-    // Apply goal-based enhancements
-    if (goal) {
-      const goalPrefixes: { [key: string]: string } = {
-        'write': 'Compose compelling',
-        'draw': 'Illustrate detailed',
-        'code': 'Develop robust',
-        'explain': 'Elaborate comprehensively on',
-        'brainstorm': 'Generate innovative concepts for',
-        'marketing': 'Craft persuasive marketing content about',
-        'design_landing': 'Design a conversion-focused landing page featuring',
-        'analyze_data': 'Conduct thorough analysis of',
-        'video_script': 'Script an engaging video about',
-        'email_campaign': 'Design an effective email campaign focusing on',
-        'product_feature': 'Conceptualize an intuitive product feature for',
-        'technical_doc': 'Document comprehensive technical specifications for',
-        'social_media': 'Create viral social media content about',
-        'business_strategy': 'Formulate strategic business approach for',
-        'educational': 'Develop educational curriculum covering',
-        'research_summary': 'Synthesize research findings regarding'
-      };
-      
-      const prefix = goalPrefixes[goal];
-      if (prefix) {
-        words = [prefix, ...words];
-      }
+    switch (goal) {
+      case 'write':
+        enhancedSentence = `Create compelling written content that explores ${coreIdea}`;
+        break;
+      case 'draw':
+        enhancedSentence = `Generate a detailed visual illustration depicting ${coreIdea}`;
+        break;
+      case 'code':
+        enhancedSentence = `Develop robust and efficient code that implements ${coreIdea}`;
+        break;
+      case 'explain':
+        enhancedSentence = `Provide a comprehensive explanation of ${coreIdea}`;
+        break;
+      case 'brainstorm':
+        enhancedSentence = `Generate innovative and creative ideas related to ${coreIdea}`;
+        break;
+      case 'marketing':
+        enhancedSentence = `Craft persuasive marketing content that highlights ${coreIdea}`;
+        break;
+      case 'design_landing':
+        enhancedSentence = `Design a conversion-focused landing page centered around ${coreIdea}`;
+        break;
+      case 'analyze_data':
+        enhancedSentence = `Conduct thorough data analysis to uncover insights about ${coreIdea}`;
+        break;
+      case 'video_script':
+        enhancedSentence = `Write an engaging video script that presents ${coreIdea}`;
+        break;
+      case 'email_campaign':
+        enhancedSentence = `Design an effective email campaign strategy focusing on ${coreIdea}`;
+        break;
+      case 'product_feature':
+        enhancedSentence = `Conceptualize an intuitive product feature that addresses ${coreIdea}`;
+        break;
+      case 'technical_doc':
+        enhancedSentence = `Create comprehensive technical documentation covering ${coreIdea}`;
+        break;
+      case 'social_media':
+        enhancedSentence = `Develop viral social media content that showcases ${coreIdea}`;
+        break;
+      case 'business_strategy':
+        enhancedSentence = `Formulate a strategic business approach to capitalize on ${coreIdea}`;
+        break;
+      case 'educational':
+        enhancedSentence = `Develop educational curriculum that teaches ${coreIdea}`;
+        break;
+      case 'research_summary':
+        enhancedSentence = `Synthesize research findings and present key insights about ${coreIdea}`;
+        break;
+      default:
+        enhancedSentence = `Create high-quality content that effectively addresses ${coreIdea}`;
     }
     
-    // Apply audience-specific refinements
+    // Apply tone-based enhancements to the sentence structure
+    switch (tone) {
+      case 'professional':
+        enhancedSentence = enhancedSentence.replace('Create', 'Deliver professional-grade');
+        enhancedSentence = enhancedSentence.replace('Generate', 'Produce sophisticated');
+        enhancedSentence = enhancedSentence.replace('Develop', 'Engineer comprehensive');
+        break;
+      case 'creative':
+        enhancedSentence = enhancedSentence.replace('Create', 'Craft imaginative');
+        enhancedSentence = enhancedSentence.replace('Generate', 'Bring to life artistic');
+        enhancedSentence = enhancedSentence.replace('Develop', 'Innovate creative solutions for');
+        break;
+      case 'technical':
+        enhancedSentence = enhancedSentence.replace('Create', 'Implement systematic');
+        enhancedSentence = enhancedSentence.replace('Generate', 'Engineer precise');
+        enhancedSentence = enhancedSentence.replace('Develop', 'Architect technical solutions for');
+        break;
+      case 'friendly':
+        enhancedSentence = enhancedSentence.replace('Create', 'Build approachable');
+        enhancedSentence = enhancedSentence.replace('Generate', 'Develop engaging');
+        enhancedSentence = enhancedSentence.replace('Develop', 'Create welcoming solutions for');
+        break;
+      case 'persuasive':
+        enhancedSentence = enhancedSentence.replace('Create', 'Craft compelling');
+        enhancedSentence = enhancedSentence.replace('Generate', 'Produce convincing');
+        enhancedSentence = enhancedSentence.replace('Develop', 'Build impactful solutions for');
+        break;
+      case 'formal':
+        enhancedSentence = enhancedSentence.replace('Create', 'Establish authoritative');
+        enhancedSentence = enhancedSentence.replace('Generate', 'Produce structured');
+        enhancedSentence = enhancedSentence.replace('Develop', 'Construct rigorous solutions for');
+        break;
+    }
+    
+    // Add audience-specific context
     if (audience && audience !== 'general') {
-      const audienceModifiers: { [key: string]: string[] } = {
-        'professionals': ['with industry expertise', 'for experienced practitioners'],
-        'developers': ['with technical implementation details', 'including code examples'],
-        'students': ['with clear explanations', 'including step-by-step guidance'],
-        'kids': ['using simple language', 'with fun examples'],
-        'marketers': ['focusing on ROI', 'emphasizing conversion potential'],
-        'creators': ['highlighting engagement strategies', 'with audience growth tips'],
-        'executives': ['with strategic insights', 'focusing on business impact'],
-        'researchers': ['with evidence-based approach', 'including methodology'],
-        'technical': ['with detailed technical context', 'explaining implementation']
+      const audienceEnhancements = {
+        'professionals': ', ensuring industry-standard quality and expertise',
+        'developers': ', with clear technical implementation and code examples',
+        'students': ', using accessible language and step-by-step guidance',
+        'kids': ', with fun, simple explanations and engaging examples',
+        'marketers': ', emphasizing ROI and conversion optimization strategies',
+        'creators': ', focusing on audience engagement and growth techniques',
+        'executives': ', highlighting strategic business impact and key metrics',
+        'researchers': ', incorporating evidence-based methodology and analysis',
+        'technical': ', providing detailed technical specifications and context'
       };
       
-      const modifiers = audienceModifiers[audience];
-      if (modifiers) {
-        words.push(...modifiers[0].split(' '));
-      }
+      enhancedSentence += audienceEnhancements[audience as keyof typeof audienceEnhancements] || '';
     }
     
-    // Apply constraints
-    let result = words.join(' ');
+    // Apply word count constraint by adjusting sentence complexity
+    const currentWordCount = enhancedSentence.split(/\s+/).length;
     
-    // Word count constraint - trim or expand as needed
-    const currentWordCount = result.split(/\s+/).length;
-    if (constraints.wordCount && currentWordCount > constraints.wordCount * 1.2) {
-      // If significantly over, trim while keeping core meaning
-      const wordsArray = result.split(/\s+/);
-      result = wordsArray.slice(0, Math.floor(constraints.wordCount * 1.1)).join(' ');
-    } else if (constraints.wordCount && currentWordCount < constraints.wordCount * 0.8) {
-      // If significantly under, add descriptive words
-      const enhancementWords = {
-        'professional': ['comprehensive', 'detailed', 'thorough'],
-        'creative': ['imaginative', 'artistic', 'inspired'],
-        'technical': ['precise', 'systematic', 'methodical'],
-        'friendly': ['approachable', 'engaging', 'welcoming'],
-        'persuasive': ['compelling', 'convincing', 'impactful'],
-        'formal': ['structured', 'authoritative', 'rigorous']
+    if (constraints.wordCount && currentWordCount < constraints.wordCount * 0.7) {
+      // Expand the sentence with additional descriptive elements
+      const expansions = {
+        'professional': ', incorporating best practices and industry standards',
+        'creative': ', with innovative approaches and artistic flair',
+        'technical': ', following systematic methodology and precise specifications',
+        'friendly': ', maintaining an approachable and conversational style',
+        'persuasive': ', using compelling arguments and strong call-to-action elements',
+        'formal': ', adhering to established protocols and authoritative standards'
       };
       
-      const additionalWords = enhancementWords[tone as keyof typeof enhancementWords] || ['detailed', 'comprehensive'];
-      result = result + ' ' + additionalWords.join(' ');
+      enhancedSentence += expansions[tone as keyof typeof expansions] || ', with attention to detail and quality';
+    } else if (constraints.wordCount && currentWordCount > constraints.wordCount * 1.2) {
+      // Simplify the sentence to meet word count
+      enhancedSentence = enhancedSentence.replace(/,.*?and/, ' and');
+      enhancedSentence = enhancedSentence.replace(/that.*?addresses/, 'addressing');
     }
     
-    // Remove forbidden words
+    // Remove forbidden words if specified
     if (constraints.hasForbiddenWords && constraints.forbiddenWords) {
       const forbiddenWords = constraints.forbiddenWords.split(',').map((w: string) => w.trim().toLowerCase()).filter(Boolean);
       forbiddenWords.forEach(forbiddenWord => {
         const regex = new RegExp(`\\b${forbiddenWord}\\b`, 'gi');
-        result = result.replace(regex, '');
+        enhancedSentence = enhancedSentence.replace(regex, '[alternative term]');
       });
-      // Clean up extra spaces
-      result = result.replace(/\s+/g, ' ').trim();
     }
     
-    // Final cleanup and polish
-    result = result.replace(/\s+/g, ' ').trim();
-    
-    // Ensure proper capitalization
-    if (result) {
-      result = result.charAt(0).toUpperCase() + result.slice(1);
+    // Final polish and ensure proper sentence structure
+    enhancedSentence = enhancedSentence.trim();
+    if (!enhancedSentence.endsWith('.')) {
+      enhancedSentence += '.';
     }
     
-    return result;
+    return enhancedSentence;
   };
 
   const handleCopy = () => {
