@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -67,111 +66,162 @@ const PromptGenerator = () => {
   };
 
   const enhanceUserInput = (userInput: string, goal: string, tone: string, audience: string, constraints: any): string => {
-    // Clean and prepare the user input
-    let enhancedPrompt = userInput.trim();
+    let words = userInput.trim().split(/\s+/);
     
-    // Add context and clarity based on goal
+    // Apply tone-based word refinements
+    words = words.map(word => {
+      const lowerWord = word.toLowerCase();
+      
+      // Tone-based word enhancements
+      if (tone === 'professional') {
+        const professionalReplacements: { [key: string]: string } = {
+          'good': 'excellent',
+          'bad': 'suboptimal',
+          'big': 'substantial',
+          'small': 'concise',
+          'nice': 'exceptional',
+          'cool': 'innovative',
+          'awesome': 'outstanding',
+          'great': 'superior',
+          'ok': 'acceptable',
+          'okay': 'adequate'
+        };
+        return professionalReplacements[lowerWord] || word;
+      }
+      
+      if (tone === 'creative') {
+        const creativeReplacements: { [key: string]: string } = {
+          'good': 'magnificent',
+          'nice': 'delightful',
+          'big': 'enormous',
+          'small': 'tiny',
+          'make': 'craft',
+          'create': 'bring to life',
+          'show': 'reveal',
+          'tell': 'narrate'
+        };
+        return creativeReplacements[lowerWord] || word;
+      }
+      
+      if (tone === 'technical') {
+        const technicalReplacements: { [key: string]: string } = {
+          'make': 'implement',
+          'create': 'develop',
+          'fix': 'optimize',
+          'change': 'modify',
+          'improve': 'enhance',
+          'check': 'validate',
+          'test': 'verify'
+        };
+        return technicalReplacements[lowerWord] || word;
+      }
+      
+      if (tone === 'persuasive') {
+        const persuasiveReplacements: { [key: string]: string } = {
+          'good': 'outstanding',
+          'help': 'empower',
+          'show': 'demonstrate',
+          'make': 'deliver',
+          'get': 'achieve',
+          'nice': 'remarkable'
+        };
+        return persuasiveReplacements[lowerWord] || word;
+      }
+      
+      return word;
+    });
+    
+    // Apply goal-based enhancements
     if (goal) {
-      const goalEnhancements = {
-        write: "Write detailed, engaging content about",
-        draw: "Create a detailed visual representation of",
-        code: "Generate clean, well-documented code for",
-        explain: "Provide a comprehensive explanation of",
-        brainstorm: "Generate creative and innovative ideas for",
-        marketing: "Create compelling marketing content for",
-        design_landing: "Design an effective landing page for",
-        analyze_data: "Analyze and provide insights about",
-        video_script: "Write an engaging video script about",
-        email_campaign: "Create an email campaign focused on",
-        product_feature: "Design a user-friendly product feature for",
-        technical_doc: "Write comprehensive technical documentation for",
-        social_media: "Create engaging social media content about",
-        business_strategy: "Develop a strategic business approach for",
-        educational: "Create educational content that teaches",
-        research_summary: "Summarize key research findings about"
+      const goalPrefixes: { [key: string]: string } = {
+        'write': 'Compose compelling',
+        'draw': 'Illustrate detailed',
+        'code': 'Develop robust',
+        'explain': 'Elaborate comprehensively on',
+        'brainstorm': 'Generate innovative concepts for',
+        'marketing': 'Craft persuasive marketing content about',
+        'design_landing': 'Design a conversion-focused landing page featuring',
+        'analyze_data': 'Conduct thorough analysis of',
+        'video_script': 'Script an engaging video about',
+        'email_campaign': 'Design an effective email campaign focusing on',
+        'product_feature': 'Conceptualize an intuitive product feature for',
+        'technical_doc': 'Document comprehensive technical specifications for',
+        'social_media': 'Create viral social media content about',
+        'business_strategy': 'Formulate strategic business approach for',
+        'educational': 'Develop educational curriculum covering',
+        'research_summary': 'Synthesize research findings regarding'
       };
       
-      const goalPrefix = goalEnhancements[goal as keyof typeof goalEnhancements];
-      if (goalPrefix) {
-        enhancedPrompt = `${goalPrefix} ${enhancedPrompt}`;
+      const prefix = goalPrefixes[goal];
+      if (prefix) {
+        words = [prefix, ...words];
       }
     }
     
-    // Enhance based on tone
-    const toneEnhancements = {
-      professional: "in a professional, authoritative manner",
-      friendly: "in a conversational, approachable style",
-      technical: "with technical precision and detailed explanations",
-      creative: "with creativity and innovative thinking",
-      persuasive: "in a compelling, persuasive way",
-      formal: "using formal, academic language"
-    };
-    
-    const toneAddition = toneEnhancements[tone as keyof typeof toneEnhancements];
-    if (toneAddition) {
-      enhancedPrompt += `, ${toneAddition}`;
-    }
-    
-    // Add audience-specific refinements
+    // Apply audience-specific refinements
     if (audience && audience !== 'general') {
-      const audienceEnhancements = {
-        professionals: "tailored for industry professionals with expertise in the field",
-        developers: "designed for software developers with technical implementation details",
-        students: "explained clearly for learners with examples and step-by-step guidance",
-        kids: "simplified for children with age-appropriate language and fun examples",
-        marketers: "focused on marketing professionals with ROI and conversion insights",
-        creators: "aimed at content creators with engagement and audience growth tips",
-        executives: "structured for decision-makers with strategic business insights",
-        researchers: "detailed for researchers with methodology and evidence-based approach",
-        technical: "explained for technically-minded individuals with clear technical context"
+      const audienceModifiers: { [key: string]: string[] } = {
+        'professionals': ['with industry expertise', 'for experienced practitioners'],
+        'developers': ['with technical implementation details', 'including code examples'],
+        'students': ['with clear explanations', 'including step-by-step guidance'],
+        'kids': ['using simple language', 'with fun examples'],
+        'marketers': ['focusing on ROI', 'emphasizing conversion potential'],
+        'creators': ['highlighting engagement strategies', 'with audience growth tips'],
+        'executives': ['with strategic insights', 'focusing on business impact'],
+        'researchers': ['with evidence-based approach', 'including methodology'],
+        'technical': ['with detailed technical context', 'explaining implementation']
       };
       
-      const audienceAddition = audienceEnhancements[audience as keyof typeof audienceEnhancements];
-      if (audienceAddition) {
-        enhancedPrompt += `. Make it ${audienceAddition}`;
+      const modifiers = audienceModifiers[audience];
+      if (modifiers) {
+        words.push(...modifiers[0].split(' '));
       }
     }
     
-    // Add constraints
-    const constraintsList = [];
+    // Apply constraints
+    let result = words.join(' ');
     
-    if (constraints.wordCount) {
-      constraintsList.push(`Keep it around ${constraints.wordCount} words`);
+    // Word count constraint - trim or expand as needed
+    const currentWordCount = result.split(/\s+/).length;
+    if (constraints.wordCount && currentWordCount > constraints.wordCount * 1.2) {
+      // If significantly over, trim while keeping core meaning
+      const wordsArray = result.split(/\s+/);
+      result = wordsArray.slice(0, Math.floor(constraints.wordCount * 1.1)).join(' ');
+    } else if (constraints.wordCount && currentWordCount < constraints.wordCount * 0.8) {
+      // If significantly under, add descriptive words
+      const enhancementWords = {
+        'professional': ['comprehensive', 'detailed', 'thorough'],
+        'creative': ['imaginative', 'artistic', 'inspired'],
+        'technical': ['precise', 'systematic', 'methodical'],
+        'friendly': ['approachable', 'engaging', 'welcoming'],
+        'persuasive': ['compelling', 'convincing', 'impactful'],
+        'formal': ['structured', 'authoritative', 'rigorous']
+      };
+      
+      const additionalWords = enhancementWords[tone as keyof typeof enhancementWords] || ['detailed', 'comprehensive'];
+      result = result + ' ' + additionalWords.join(' ');
     }
     
+    // Remove forbidden words
     if (constraints.hasForbiddenWords && constraints.forbiddenWords) {
-      const forbiddenWords = constraints.forbiddenWords.split(',').map((w: string) => w.trim()).filter(Boolean);
-      if (forbiddenWords.length > 0) {
-        constraintsList.push(`avoid using these terms: ${forbiddenWords.join(', ')}`);
-      }
+      const forbiddenWords = constraints.forbiddenWords.split(',').map((w: string) => w.trim().toLowerCase()).filter(Boolean);
+      forbiddenWords.forEach(forbiddenWord => {
+        const regex = new RegExp(`\\b${forbiddenWord}\\b`, 'gi');
+        result = result.replace(regex, '');
+      });
+      // Clean up extra spaces
+      result = result.replace(/\s+/g, ' ').trim();
     }
     
-    // Add goal-specific quality instructions
-    const qualityInstructions = {
-      write: "Ensure the content is well-structured, engaging, and informative",
-      code: "Include comments, follow best practices, and ensure the code is maintainable",
-      marketing: "Focus on benefits, include clear calls-to-action, and emphasize value propositions",
-      design_landing: "Prioritize conversion optimization and user experience",
-      video_script: "Include engaging hooks, clear transitions, and strong conclusions",
-      educational: "Structure content progressively and include practical examples",
-      technical_doc: "Provide step-by-step instructions and troubleshooting information"
-    };
+    // Final cleanup and polish
+    result = result.replace(/\s+/g, ' ').trim();
     
-    const qualityAddition = qualityInstructions[goal as keyof typeof qualityInstructions];
-    if (qualityAddition) {
-      constraintsList.push(qualityAddition);
+    // Ensure proper capitalization
+    if (result) {
+      result = result.charAt(0).toUpperCase() + result.slice(1);
     }
     
-    if (constraintsList.length > 0) {
-      enhancedPrompt += `. ${constraintsList.join(', ')}`;
-    }
-    
-    // Final polish - ensure it ends properly
-    if (!enhancedPrompt.endsWith('.') && !enhancedPrompt.endsWith('!') && !enhancedPrompt.endsWith('?')) {
-      enhancedPrompt += '.';
-    }
-    
-    return enhancedPrompt;
+    return result;
   };
 
   const handleCopy = () => {
