@@ -3,7 +3,6 @@ import React from 'react';
 import Logo from '../components/Logo';
 import PromptGenerator from '../components/PromptGenerator';
 import Footer from '../components/Footer';
-import { Button } from "@/components/ui/button";
 import { Hexagon, Code, Zap } from "lucide-react";
 
 const Index = () => {
@@ -17,7 +16,6 @@ const Index = () => {
             <a href="#features" className="text-chrome-light hover:text-primary transition-colors">Features</a>
             <a href="#how-it-works" className="text-chrome-light hover:text-primary transition-colors">How It Works</a>
           </nav>
-          <Button className="bg-primary hover:bg-primary/90 red-glow">Get Started</Button>
         </div>
       </header>
 
@@ -122,9 +120,6 @@ const Index = () => {
           <p className="text-chrome-light mb-8">
             Start generating powerful, tailored prompts for free. No limits, no subscription required.
           </p>
-          <Button className="bg-primary hover:bg-primary/90 red-glow text-lg py-6 px-8">
-            Get Started Now
-          </Button>
         </div>
       </section>
 
